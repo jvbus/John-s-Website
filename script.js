@@ -47,24 +47,16 @@ canvas.height / 2,
 }
 
 function drawStars() {
-  ctx.fillStyle = "red";
-  ctx.fillRect(50,50,10,10);
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, cavas.width, canvas.height);
 
   ctx.fillStyle = "white";
   
   for (let star of stars) {
-    star.z -= 4;
   
-    if (star.z <= 0) {
-      star.z = canvas.width;
-    }
+    const px = Math.random() * canvas.width;
+    const py = Math.random() * canvas.height;
 
-    const k = 128 / star.z;
-    const px = star.x * k + canvas.width / 2;
-    const py = star.y * k + canvas.height / 2;
-
-    if (px >= 0 && px <= canvas.width &&
-py >= 0 && py <= canvas.height) {
       ctx.beginPath();
       ctx.arc(px, py, 4, 0, Math.PI * 2);
       ctx.fill();
