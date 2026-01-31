@@ -47,9 +47,8 @@ canvas.height / 2,
 }
 
 function drawStars() {
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, canvas.width,
-canvas.height);
+  ctx.fillStyle = "red";
+  ctx.fillRect(50,50,10,10);
 
   ctx.fillStyle = "white";
   
@@ -67,7 +66,7 @@ canvas.height);
     if (px >= 0 && px <= canvas.width &&
 py >= 0 && py <= canvas.height) {
       ctx.beginPath();
-      ctx.arc(px, py, 2, 0, Math.PI * 2);
+      ctx.arc(px, py, 4, 0, Math.PI * 2);
       ctx.fill();
     }
   }
