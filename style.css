@@ -11,3 +11,7 @@ button {
   font-size: 16px;
   cursor: pointer;
 }
+
+#title {
+  transition: transform 0.1s linear;
+}
