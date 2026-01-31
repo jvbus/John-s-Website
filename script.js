@@ -47,7 +47,7 @@ canvas.height / 2,
 }
 
 function drawStars() {
-  ctx.fillStyle = "white";
+  ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width,
 canvas.height);
 
@@ -77,14 +77,10 @@ py >= 0 && py <= canvas.height) {
     
 //---------- MAIN LOOP ----------
 function animate() {
-  animateTitle();
   drawStars();
   requestAnimationFrame(animate);
 }
 
-button.addEventListener("click", () => {
-  title.textContent = "Warp speed engaged";
-});
 
 animate()"
 
