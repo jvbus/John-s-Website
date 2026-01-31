@@ -61,10 +61,8 @@ canvas.height);
     }
 
     const k = 128 / star.z;
-    const px = star.x * k + canvas.width /
-2;
-    const py = star.y * k +
-canvas.height / 2;
+    const px = star.x * k + canvas.width / 2;
+    const py = star.y * k + canvas.height / 2;
 
     if (px >= 0 && px <= canvas.width &&
 py >= 0 && py <= canvas.height) {
@@ -82,5 +80,5 @@ function animate() {
 }
 
 
-animate()"
+animate();
 
