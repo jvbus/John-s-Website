@@ -3,6 +3,7 @@ document.getElementById("title");
 const button =
 document.getElementById("btn");
 
+//---------- TITLE ANIMATION ----------
 let scale = 1;
 let growing = true;
 
@@ -24,8 +25,13 @@ const canvas =
 document.getElementById("starfield");
 const ctx = canvas.getContent("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize",
+resizeCanvas);
 
 const stars = [];
 const STAR_COUNT = 300;
