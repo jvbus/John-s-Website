@@ -23,7 +23,7 @@ function animateTitle() {
 // ---------- STARFIELD ----------
 const canvas =
 document.getElementById("starfield");
-const ctx = canvas.getContent("2d");
+const ctx = canvas.getContext("2d");
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
