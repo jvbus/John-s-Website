@@ -1,37 +1,66 @@
+//==EXPLANATIONS==//
+//==Styles everything visually==//
+
+//==Layers z-index → ensures stars < mountains < UI==//
+
+//==pointer-events: none → lets mouse events pass through canvas==//
+
+//==Buttons & text are styled for glow + hover==//
+
+
+
+/* ================= RESET ================= */
 html, body {
   margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
-  background: black;
   overflow: hidden;
-  font-family: sans-serif;
+  background: black;
+  font-family: system-ui, sans-serif;
 }
 
-/* Canvas layers */
-#starsCanvas {
+/* ================= CANVASES ================= */
+canvas {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  pointer-events: none; /* lets you click buttons above */
 }
 
-#mountainsCanvas {
+#stars { z-index: 0; }
+#world { z-index: 1; }
+
+/* ================= UI ================= */
+#ui {
   position: fixed;
   inset: 0;
-  z-index: 1;
-}
-
-/* Content layer */
-#content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 2;
-  color: rgba(120,170,255,0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
   text-align: center;
 }
 
+h1 {
+  font-size: 56px;
+  text-shadow: 0 0 20px rgba(120,170,255,0.8);
+}
+
 button {
-  padding: 12px 24px;
-  font-size: 22px;
+  margin-top: 20px;
+  padding: 14px 28px;
+  font-size: 20px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  background: rgba(100,150,255,0.7);
+  color: white;
+  box-shadow: 0 0 25px rgba(100,150,255,0.6);
+  transition: 0.2s;
+}
+
+button:hover {
+  box-shadow: 0 0 40px rgba(100,150,255,0.8);
 }
