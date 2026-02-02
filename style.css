@@ -22,10 +22,20 @@ body {
   height: 100%;
 }
 
+mainspace {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background: black;
+
 maincanvas {
   position: fixed;
-  body: solid;
+  inset: 0;
   color: black;
   width: 100%;
   height: 100%;
+  z-index: 0;
 }
