@@ -1,7 +1,7 @@
-head {
+.head {
   color: blue;
 }
 
-maincanvas {
+.body {
   color: yellow;
 }
