@@ -22,15 +22,6 @@ body {
   height: 100%;
 }
 
-mainspace {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  background: black;
-
 maincanvas {
   position: fixed;
   inset: 0;
@@ -39,3 +30,14 @@ maincanvas {
   height: 100%;
   z-index: 0;
 }
+
+mainspace {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background: black;
+}
+
