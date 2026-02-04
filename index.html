@@ -1,15 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>John's Home</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
+<!-- =====================================================
+     PARALLAX HTML SKELETON
+     Structure matters more than effects
+===================================================== -->
+
 <body>
-<canvas id="maincanvas"></canvas>
-<space id="mainspace"></space>
-  <h1 id="maintitle">This is my home!</h1>
-  
-  <h2 id="mainsubtitle">This is my website to play and go CRAZY!</h2>
+
+  <!-- PARALLAX SECTION WRAPPER -->
+  <!-- Acts as a positioning context -->
+  <section class="parallax-section">
+
+    <!-- PARALLAX LAYER (BACKGROUND) -->
+    <!-- data-speed controls how fast it moves -->
+    <div class="parallax-layer layer-back" style="--speed: 0.2">
+      <img src="bg.jpg" alt="" />
+    </div>
+
+    <!-- PARALLAX LAYER (MIDGROUND) -->
+    <div class="parallax-layer layer-mid" style="--speed: 0.5">
+      <img src="mid.png" alt="" />
+    </div>
+
+    <!-- CONTENT LAYER (NO PARALLAX) -->
+    <div class="parallax-content">
+      <h1>Parallax Title</h1>
+      <p>This content stays readable and stable.</p>
+    </div>
+
+  </section>
+
 </body>
-</html>
