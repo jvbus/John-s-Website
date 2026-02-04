@@ -1,95 +1,118 @@
-//=====EXPLANATIONS=====//
-//==starsCanvas → JS draws starfield with glow==//
-//==worldCanvas → JS draws 3D mountains / layers==//
-//==ui → JS handles mouse movement for parallax==//
-//==enterBtn → triggers interaction==//
+/* =====================================================
+   PARALLAX SCRIPT SKELETON
+   Purpose: Scroll-based parallax effect (mobile safe)
+   ===================================================== */
 
-//==JS STARTS==//
 
-// GET CANVAS ELEMENTS
-const starsCanvas = document.getElementById("stars");
-const starsCtx = starsCanvas.getContext("2d");
+/* -----------------------------------------------------
+   1. FEATURE CHECKS / EARLY EXITS
+   These go first so we don’t do any work if we shouldn’t
+----------------------------------------------------- */
 
-const worldCanvas = document.getElementById("world");
-const worldCtx = worldCanvas.getContext("2d");
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
 
-const ui = document.getElementById("ui");
-const enterBtn = document.getElementById("enterBtn");
-
-// RESIZE CANVASES
-function resize() {
-  starsCanvas.width = window.innerWidth;
-  starsCanvas.height = window.innerHeight;
-  worldCanvas.width = window.innerWidth;
-  worldCanvas.height = window.innerHeight;
+if (prefersReducedMotion) {
+  // Respect accessibility settings
+  document.documentElement.classList.add("reduce-motion");
+  // Exit early — no parallax logic runs
+  // return; // uncomment if wrapping in a function
 }
-window.addEventListener("resize", resize);
-resize();
 
-// ===== STARFIELD =====
-const stars = Array.from({ length: 600 }, () => ({
-  x: Math.random() * starsCanvas.width,
-  y: Math.random() * starsCanvas.height,
-  size: Math.random() * 2 + 0.5,
-  speed: Math.random() * 0.5 + 0.1,
-  glow: Math.random() * 0.8 + 0.2
-}));
 
-function drawStars() {
-  starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
-  stars.forEach(star => {
-    star.x -= star.speed;
-    if (star.x < 0) star.x = starsCanvas.width;
-    starsCtx.fillStyle = `rgba(255,255,255,${star.glow})`;
-    starsCtx.beginPath();
-    starsCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-    starsCtx.fill();
-  });
-  requestAnimationFrame(drawStars);
+/* -----------------------------------------------------
+   2. CONFIGURATION / CONSTANTS
+   Tweak values here without touching logic
+----------------------------------------------------- */
+
+const MOBILE_BREAKPOINT = 768;
+const MOBILE_SPEED_MULTIPLIER = 0.5;
+const DESKTOP_SPEED_MULTIPLIER = 1;
+
+const speedMultiplier =
+  window.innerWidth <= MOBILE_BREAKPOINT
+    ? MOBILE_SPEED_MULTIPLIER
+    : DESKTOP_SPEED_MULTIPLIER;
+
+
+/* -----------------------------------------------------
+   3. DOM SELECTION
+   Query elements ONCE and reuse them
+----------------------------------------------------- */
+
+const parallaxLayers = document.querySelectorAll("[data-parallax]");
+
+
+/* -----------------------------------------------------
+   4. STATE VARIABLES
+   Track scroll position & animation state
+----------------------------------------------------- */
+
+let latestScrollY = 0;
+let isTicking = false;
+
+
+/* -----------------------------------------------------
+   5. HELPER FUNCTIONS
+   Small utilities that keep logic readable
+----------------------------------------------------- */
+
+function isInViewport(element) {
+  const rect = element.getBoundingClientRect();
+  return rect.bottom > 0 && rect.top < window.innerHeight;
 }
-drawStars();
 
-// ===== 3D WORLD / MOUNTAINS WITH PARALLAX =====
-const layers = [
-  { color: "#1a2a3f", depth: 0.2, peaks: 6, offset: 200 },
-  { color: "#2b4a6f", depth: 0.5, peaks: 5, offset: 150 },
-  { color: "#3b6a9f", depth: 0.8, peaks: 4, offset: 100 }
-];
 
-let mouse = { x: 0, y: 0 };
-window.addEventListener("mousemove", e => {
-  mouse.x = e.clientX / window.innerWidth;
-  mouse.y = e.clientY / window.innerHeight;
-});
+/* -----------------------------------------------------
+   6. CORE PARALLAX UPDATE FUNCTION
+   This does the actual visual movement
+----------------------------------------------------- */
 
-function drawWorld() {
-  worldCtx.clearRect(0, 0, worldCanvas.width, worldCanvas.height);
+function updateParallax() {
+  parallaxLayers.forEach(layer => {
+    // Skip elements that are off-screen (mobile perf win)
+    if (!isInViewport(layer)) return;
 
-  layers.forEach(layer => {
-    worldCtx.fillStyle = layer.color;
-    worldCtx.beginPath();
-    worldCtx.moveTo(0, worldCanvas.height);
+    const speed = Number(layer.dataset.parallax) || 0;
+    const offsetY = latestScrollY * speed * speedMultiplier;
 
-    const step = worldCanvas.width / (layer.peaks * 2);
-    for (let i = 0; i <= layer.peaks * 2; i++) {
-      const x = i * step;
-      const peak = worldCanvas.height - layer.offset - Math.random() * 100;
-      const parallaxX = (mouse.x - 0.5) * layer.depth * 50;
-      const parallaxY = (mouse.y - 0.5) * layer.depth * 50;
-      const y = peak + parallaxY;
-      worldCtx.lineTo(x + parallaxX, y);
-    }
-
-    worldCtx.lineTo(worldCanvas.width, worldCanvas.height);
-    worldCtx.closePath();
-    worldCtx.fill();
+    // Use transform for GPU-accelerated animation
+    layer.style.transform = `translate3d(0, ${offsetY}px, 0)`;
   });
 
-  requestAnimationFrame(drawWorld);
+  // Allow the next animation frame
+  isTicking = false;
 }
-drawWorld();
 
-// ===== BUTTON INTERACTIVITY =====
-enterBtn.addEventListener("click", () => {
-  alert("Welcome to your 3D interactive universe!");
-});
+
+/* -----------------------------------------------------
+   7. SCROLL HANDLER
+   Keep this light — no heavy logic here
+----------------------------------------------------- */
+
+function onScroll() {
+  latestScrollY = window.scrollY;
+
+  // Throttle with requestAnimationFrame
+  if (!isTicking) {
+    window.requestAnimationFrame(updateParallax);
+    isTicking = true;
+  }
+}
+
+
+/* -----------------------------------------------------
+   8. EVENT LISTENERS
+   Hook user actions to handlers
+----------------------------------------------------- */
+
+window.addEventListener("scroll", onScroll, { passive: true });
+
+
+/* -----------------------------------------------------
+   9. INITIALIZATION
+   Run once so elements start in the correct position
+----------------------------------------------------- */
+
+updateParallax();
