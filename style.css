@@ -107,3 +107,84 @@ body {
     transform: none !important;
   }
 }
+
+
+
+/* =====================================================
+PARALLAX SECTION (CONTAINER)
+Purpose:
+- Establishes relative positioning
+- Controls visible area of parallax
+
+Key properties:
+- position: relative
+- overflow: hidden
+===================================================== */
+.parallax-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* =====================================================
+PARALLAX LAYER (MOVING ELEMENT)
+Purpose:
+- Layer that visually moves on scroll
+- Positioned independently of content
+
+Performance:
+- Always animate with transform
+- Avoid layout properties
+===================================================== */
+.parallax-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* =====================================================
+SCROLL-DRIVEN TRANSFORM
+Purpose:
+- Creates parallax motion using CSS variables
+
+Notes:
+- --scroll-y is usually set via JS
+- --speed controls depth per layer
+- clamp() prevents runaway movement
+===================================================== */
+transform: translate3d(
+  0,
+  clamp(
+    calc(var(--scroll-y) * var(--speed)),
+    -200px,
+    200px
+  ),
+  0
+);
+
+/* =====================================================
+DEPTH & STACKING
+Purpose:
+- Controls which layers appear closer/farther
+
+Rule:
+- Lower z-index = farther away
+===================================================== */
+.layer-back { z-index: 1; }
+.layer-mid  { z-index: 2; }
+.layer-front{ z-index: 3; }
+
+/* =====================================================
+ACCESSIBILITY: REDUCED MOTION
+Purpose:
+- Disables parallax for users who request it
+
+Rule:
+- Always include this block
+===================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .parallax-layer {
+    transform: none !important;
+  }
+}
+
